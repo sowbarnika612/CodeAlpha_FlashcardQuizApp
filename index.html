@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Quiz App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>Flashcard Quiz</h1>
+            <p>Learn, Practice and Remember!</p>
+        </header>
+
+        <main>
+
+            <!-- Category Filter -->
+            <div class="filter-section">
+                <label for="category-filter">Choose Subject:</label>
+
+                <select id="category-filter">
+                    <option value="All">All Categories</option>
+                    <option value="Programming">Programming</option>
+                    <option value="DBMS">DBMS</option>
+                    <option value="Artificial Intelligence">Artificial Intelligence</option>
+                    <option value="Mathematics">Mathematics</option>
+                </select>
+            </div>
+
+            <!-- Flashcard Search -->
+            <div class="flashcard-search">
+
+                <div class="search-box">
+
+                    <span class="search-icon">🔍</span>
+
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search questions, answers or categories..."
+                    >
+
+                    <button
+                        type="button"
+                        id="clear-search-btn"
+                        title="Clear Search"
+                    >
+                        ✕
+                    </button>
+
+                </div>
+
+                <p id="search-message"></p>
+
+            </div>
+
+            <!-- Card Information -->
+            <div class="card-info">
+                <span id="card-count">Card 1 of 1</span>
+                <span id="card-category">Programming</span>
+            </div>
+
+            <!-- Flashcard -->
+            <div class="flashcard">
+
+                <div class="flashcard-inner">
+
+                    <!-- Front Side -->
+                    <div class="flashcard-front">
+                        <h2>Question</h2>
+                        <p id="card-text">What is HTML?</p>
+                        <button id="show-answer-btn">Show Answer</button>
+                    </div>
+
+                    <!-- Back Side -->
+                    <div class="flashcard-back">
+
+                        <h2>Answer</h2>
+
+                        <p id="answer-text">
+                            HTML stands for HyperText Markup Language.
+                        </p>
+
+                        <!-- Know It and Need Practice Buttons -->
+                        <div class="answer-actions">
+                            <button id="know-btn">Know It</button>
+                            <button id="practice-btn">Need Practice</button>
+                        </div>
+
+                        <button id="flip-back-btn">Show Question</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button id="prev-btn">Previous</button>
+                <button id="next-btn">Next</button>
+            </div>
+
+            <!-- Shuffle Controls -->
+            <div class="shuffle-controls">
+                <button id="shuffle-btn">🔀 Shuffle Cards</button>
+                <button id="normal-order-btn">↩ Normal Order</button>
+            </div>
+
+            <!-- Theme Controls -->
+            <div class="theme-controls">
+                <button id="theme-toggle-btn">🌙 Dark Mode</button>
+                <button id="sound-toggle-btn">🔊 Sound On</button>
+            </div>
+
+            <!-- Timed Study Mode -->
+            <div class="timer-section">
+
+                <h2>Timed Study Mode</h2>
+
+                <p>Focus on your flashcards with a countdown timer.</p>
+
+                <div class="timer-display" id="timer-display">
+                    05:00
+                </div>
+
+                <label for="study-duration">Choose Study Duration:</label>
+
+                <select id="study-duration">
+                    <option value="60">1 Minute</option>
+                    <option value="300" selected>5 Minutes</option>
+                    <option value="600">10 Minutes</option>
+                    <option value="900">15 Minutes</option>
+                </select>
+
+                <div class="timer-buttons">
+                    <button id="start-timer-btn">▶ Start</button>
+                    <button id="pause-timer-btn">⏸ Pause</button>
+                    <button id="reset-timer-btn">↻ Reset</button>
+                </div>
+
+                <p id="timer-message">Ready to study? Press Start!</p>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- QUIZ MODE -->
+            <!-- ============================= -->
+
+            <div class="quiz-section" id="quiz-section">
+
+                <h2>🧠 Quiz Mode</h2>
+
+                <p class="quiz-description">
+                    Test your knowledge with multiple-choice questions!
+                </p>
+
+                <!-- Quiz Start Screen -->
+                <div class="quiz-start-screen" id="quiz-start-screen">
+
+                    <div class="quiz-intro">
+                        <h3>Ready to Challenge Yourself?</h3>
+
+                        <p>
+                            Answer the questions and see how much you've learned.
+                        </p>
+                    </div>
+
+                    <button id="start-quiz-btn">
+                        🚀 Start Quiz
+                    </button>
+
+                </div>
+
+                <!-- Quiz Question Screen -->
+                <div class="quiz-question-screen" id="quiz-question-screen"
+                    style="display: none;">
+
+                    <!-- Quiz Progress -->
+                    <div class="quiz-progress-info">
+
+                        <span id="quiz-question-count">
+                            Question 1 of 10
+                        </span>
+
+                        <span id="quiz-score">
+                            Score: 0
+                        </span>
+
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="quiz-progress-bar">
+                        <div id="quiz-progress-fill"></div>
+                    </div>
+
+                    <!-- Question -->
+                    <div class="quiz-question-container">
+
+                        <h3 id="quiz-question">
+                            Quiz question will appear here.
+                        </h3>
+
+                    </div>
+
+                    <!-- Answer Options -->
+                    <div class="quiz-options" id="quiz-options">
+
+                        <button class="quiz-option" data-option="0">
+                            Option 1
+                        </button>
+
+                        <button class="quiz-option" data-option="1">
+                            Option 2
+                        </button>
+
+                        <button class="quiz-option" data-option="2">
+                            Option 3
+                        </button>
+
+                        <button class="quiz-option" data-option="3">
+                            Option 4
+                        </button>
+
+                    </div>
+
+                    <!-- Feedback -->
+                    <p id="quiz-feedback"></p>
+
+                    <!-- Next Question -->
+                    <button id="next-quiz-btn" style="display: none;">
+                        Next Question →
+                    </button>
+
+                </div>
+
+                <!-- Quiz Result Screen -->
+                <div class="quiz-result-screen" id="quiz-result-screen"
+                    style="display: none;">
+
+                    <h3>🎉 Quiz Completed!</h3>
+
+                    <div class="quiz-result-score">
+                        <p>Your Final Score</p>
+
+                        <h2 id="quiz-final-score">
+                            0 / 0
+                        </h2>
+
+                    </div>
+
+                    <p id="quiz-result-message">
+                        Great job completing the quiz!
+                    </p>
+
+                    <!-- Quiz Review Button -->
+                    <button id="review-quiz-btn">
+                        📝 Review Answers
+                    </button>
+
+                    <!-- Retry Incorrect Answers -->
+                    <button id="retry-incorrect-btn">
+                        🔁 Retry Incorrect Questions
+                    </button>
+
+                    <button id="restart-quiz-btn">
+                        🔄 Restart Quiz
+                    </button>
+
+                </div>
+
+                <!-- ============================= -->
+                <!-- QUIZ REVIEW SCREEN -->
+                <!-- ============================= -->
+
+                <div class="quiz-review-screen" id="quiz-review-screen"
+                    style="display: none;">
+
+                    <h3>📝 Quiz Answer Review</h3>
+
+                    <p class="quiz-review-description">
+                        Review your answers and learn from your mistakes.
+                    </p>
+
+                    <!-- Review Summary -->
+                    <div class="quiz-review-summary" id="quiz-review-summary">
+                        <!-- Summary will be generated using JavaScript -->
+                    </div>
+
+                    <!-- Review Questions -->
+                    <div class="quiz-review-list" id="quiz-review-list">
+                        <!-- Review cards will be generated using JavaScript -->
+                    </div>
+
+                    <!-- Review Controls -->
+                    <div class="quiz-review-buttons">
+
+                        <button id="retry-review-incorrect-btn">
+                            🔁 Retry Incorrect Questions
+                        </button>
+
+                        <button id="back-to-quiz-results-btn">
+                            ← Back to Results
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Learning Progress Dashboard -->
+            <div class="dashboard">
+
+                <h2>Learning Progress</h2>
+
+                <div class="progress-stats">
+
+                    <div class="stat-box">
+                        <h3 id="total-cards">0</h3>
+                        <p>Total Cards</p>
+                    </div>
+
+                    <div class="stat-box">
+                        <h3 id="known-cards">0</h3>
+                        <p>Know It</p>
+                    </div>
+
+                    <div class="stat-box">
+                        <h3 id="practice-cards">0</h3>
+                        <p>Need Practice</p>
+                    </div>
+
+                </div>
+
+                <div class="progress-section">
+
+                    <div class="progress-label">
+                        <span>Overall Progress</span>
+                        <span id="progress-percentage">0%</span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div id="progress-fill"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Achievement Badges -->
+            <div class="achievements-section">
+
+                <h2>🏆 Achievements</h2>
+
+                <p class="achievements-description">
+                    Unlock badges as you master more flashcards!
+                </p>
+
+                <div class="achievements-grid">
+
+                    <!-- Beginner Badge -->
+                    <div class="achievement-card" id="badge-beginner">
+
+                        <div class="achievement-icon">🥉</div>
+
+                        <h3>Beginner</h3>
+
+                        <p>Master 5 flashcards</p>
+
+                        <div class="achievement-progress">
+                            <span id="beginner-progress">0 / 5</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Learner Badge -->
+                    <div class="achievement-card" id="badge-learner">
+
+                        <div class="achievement-icon">🥈</div>
+
+                        <h3>Learner</h3>
+
+                        <p>Master 10 flashcards</p>
+
+                        <div class="achievement-progress">
+                            <span id="learner-progress">0 / 10</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Master Badge -->
+                    <div class="achievement-card" id="badge-master">
+
+                        <div class="achievement-icon">🥇</div>
+
+                        <h3>Master</h3>
+
+                        <p>Master 20 flashcards</p>
+
+                        <div class="achievement-progress">
+                            <span id="master-progress">0 / 20</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Expert Badge -->
+                    <div class="achievement-card" id="badge-expert">
+
+                        <div class="achievement-icon">💎</div>
+
+                        <h3>Expert</h3>
+
+                        <p>Master 30 flashcards</p>
+
+                        <div class="achievement-progress">
+                            <span id="expert-progress">0 / 30</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Study Streak Tracker -->
+            <div class="streak-section">
+
+                <h2>🔥 Study Streak</h2>
+
+                <p class="streak-description">
+                    Keep learning every day and build your study habit!
+                </p>
+
+                <!-- Streak Statistics -->
+                <div class="streak-stats">
+
+                    <!-- Current Streak -->
+                    <div class="streak-stat-card">
+
+                        <div class="streak-icon">🔥</div>
+
+                        <h3 id="current-streak">0</h3>
+
+                        <p>Current Streak</p>
+
+                    </div>
+
+                    <!-- Longest Streak -->
+                    <div class="streak-stat-card">
+
+                        <div class="streak-icon">🏆</div>
+
+                        <h3 id="longest-streak">0</h3>
+
+                        <p>Longest Streak</p>
+
+                    </div>
+
+                    <!-- Total Study Days -->
+                    <div class="streak-stat-card">
+
+                        <div class="streak-icon">📅</div>
+
+                        <h3 id="total-study-days">0</h3>
+
+                        <p>Total Study Days</p>
+
+                    </div>
+
+                </div>
+
+                <!-- Weekly Study Calendar -->
+                <div class="streak-calendar-section">
+
+                    <h3>📆 Your Study Week</h3>
+
+                    <div class="streak-calendar" id="streak-calendar">
+
+                        <!-- Calendar days will be generated using JavaScript -->
+
+                    </div>
+
+                </div>
+
+                <!-- Streak Milestones -->
+                <div class="streak-milestones-section">
+
+                    <h3>🎯 Streak Milestones</h3>
+
+                    <p>Reach these milestones to earn rewards!</p>
+
+                    <div class="streak-milestones">
+
+                        <!-- 3-Day Milestone -->
+                        <div class="streak-milestone" id="milestone-3">
+
+                            <div class="milestone-icon">🥉</div>
+
+                            <h4>3 Days</h4>
+
+                            <p>Getting Started</p>
+
+                            <span class="milestone-status" id="milestone-status-3">
+                                Locked
+                            </span>
+
+                        </div>
+
+                        <!-- 7-Day Milestone -->
+                        <div class="streak-milestone" id="milestone-7">
+
+                            <div class="milestone-icon">🥈</div>
+
+                            <h4>7 Days</h4>
+
+                            <p>One Week Strong</p>
+
+                            <span class="milestone-status" id="milestone-status-7">
+                                Locked
+                            </span>
+
+                        </div>
+
+                        <!-- 14-Day Milestone -->
+                        <div class="streak-milestone" id="milestone-14">
+
+                            <div class="milestone-icon">🥇</div>
+
+                            <h4>14 Days</h4>
+
+                            <p>Two Week Champion</p>
+
+                            <span class="milestone-status" id="milestone-status-14">
+                                Locked
+                            </span>
+
+                        </div>
+
+                        <!-- 30-Day Milestone -->
+                        <div class="streak-milestone" id="milestone-30">
+
+                            <div class="milestone-icon">💎</div>
+
+                            <h4>30 Days</h4>
+
+                            <p>Monthly Master</p>
+
+                            <span class="milestone-status" id="milestone-status-30">
+                                Locked
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Manage Flashcards -->
+            <div class="management">
+
+                <h2>Manage Flashcards</h2>
+
+                <!-- Category Selection -->
+                <select id="category-input">
+                    <option value="Programming">Programming</option>
+                    <option value="DBMS">DBMS</option>
+                    <option value="Artificial Intelligence">
+                        Artificial Intelligence
+                    </option>
+                    <option value="Mathematics">Mathematics</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="question-input"
+                    placeholder="Enter your question"
+                >
+
+                <textarea
+                    id="answer-input"
+                    placeholder="Enter your answer"
+                ></textarea>
+
+                <div class="management-buttons">
+                    <button id="add-btn">Add Card</button>
+                    <button id="edit-btn">Edit Card</button>
+                    <button id="delete-btn">Delete Card</button>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script src="quiz.js"></script>
+
+</body>
+</html>
